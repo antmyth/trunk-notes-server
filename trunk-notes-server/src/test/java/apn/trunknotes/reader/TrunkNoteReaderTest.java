@@ -30,7 +30,6 @@ public class TrunkNoteReaderTest {
             writer.write(String.format("Title: %s\n", title.asString()));
         }
 
-
         TrunkNoteReader reader = new TrunkNoteReader();
         TrunkNote expected = new TrunkNote(title);
 

@@ -4,18 +4,17 @@ import apn.trunknotes.types.Title;
 import apn.trunknotes.types.TrunkNote;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class TrunkNoteReader {
     public TrunkNote load(File noteFile) throws Exception {
-        FileInputStream stream = new FileInputStream(noteFile);
-        DataInputStream inputStream = new DataInputStream(stream);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String strLine;
-        Title title = null;
-        while ((strLine = bufferedReader.readLine())!=null){
-            title = new Title(strLine.substring(7,strLine.length()));
-        }
-        inputStream.close();
+        Path path = noteFile.toPath();
+        List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        String titleString = allLines.get(0);
+        Title title = new Title(titleString.substring(7));
         return new TrunkNote(title);
     }
 }
