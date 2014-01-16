@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToStrin
 import static org.apache.commons.lang3.builder.ToStringStyle.*;
 
 public class Timestamp implements StringValue {
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss ZZ");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss Z");
     private final DateTime dateTime;
 
     public Timestamp(String dateAsString) {

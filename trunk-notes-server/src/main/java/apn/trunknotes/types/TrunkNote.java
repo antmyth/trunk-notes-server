@@ -11,12 +11,16 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  */
 public class TrunkNote {
 
-	private final Title title;
+    private final Title title;
     private Timestamp timestamp;
+    private CreatedTimestamp createdTimestamp;
+    private LastAccessedTimestamp lastAccessedTimestamp;
 
-    public TrunkNote(Title title, Timestamp timestamp) {
-		this.title = title;
+    public TrunkNote(Title title, Timestamp timestamp, CreatedTimestamp createdTimestamp, LastAccessedTimestamp lastAccessedTimestamp) {
+        this.title = title;
         this.timestamp = timestamp;
+        this.createdTimestamp = createdTimestamp;
+        this.lastAccessedTimestamp = lastAccessedTimestamp;
     }
 
     @Override
