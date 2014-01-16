@@ -12,16 +12,19 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 public class TrunkNote {
 
 	private final Title title;
+    private Timestamp timestamp;
 
-	public TrunkNote(Title title) {
+    public TrunkNote(Title title, Timestamp timestamp) {
 		this.title = title;
-	}
+        this.timestamp = timestamp;
+    }
 
     @Override
     public int hashCode() {
         return reflectionHashCode(this);
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
         return reflectionEquals(this, o);

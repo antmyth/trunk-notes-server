@@ -1,5 +1,6 @@
 package apn.trunknotes.reader;
 
+import apn.trunknotes.types.Timestamp;
 import apn.trunknotes.types.Title;
 import apn.trunknotes.types.TrunkNote;
 import org.junit.Test;
@@ -21,6 +22,7 @@ public class TrunkNoteReaderTest {
     public void readsTheFileIntoATrunkNote() throws Exception {
         Path tempFile = Files.createTempFile(someString(), "markdown");
         Title title = new Title(someString());
+        Timestamp timestamp = new Timestamp("2014-01-08 21:37:53 +0000");
 
         assertThat(true, is(tempFile.toFile().exists()));
 
@@ -28,10 +30,11 @@ public class TrunkNoteReaderTest {
                      newBufferedWriter(tempFile, StandardCharsets.UTF_8,
                              StandardOpenOption.WRITE)) {
             writer.write(String.format("Title: %s\n", title.asString()));
+            writer.write(String.format("Timestamp: %s\n",timestamp.asString()));
         }
 
         TrunkNoteReader reader = new TrunkNoteReader();
-        TrunkNote expected = new TrunkNote(title);
+        TrunkNote expected = new TrunkNote(title,timestamp);
 
         assertThat(expected, is(reader.load(tempFile.toFile())));
     }
