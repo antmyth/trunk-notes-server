@@ -15,12 +15,24 @@ public class TrunkNote {
     private Timestamp timestamp;
     private CreatedTimestamp createdTimestamp;
     private LastAccessedTimestamp lastAccessedTimestamp;
+    private final TimesAccessed timesAccessed;
+    private final TagList tag;
+    private final NoteBody body;
 
-    public TrunkNote(Title title, Timestamp timestamp, CreatedTimestamp createdTimestamp, LastAccessedTimestamp lastAccessedTimestamp) {
+    public TrunkNote(Title title,
+                     Timestamp timestamp,
+                     CreatedTimestamp createdTimestamp,
+                     LastAccessedTimestamp lastAccessedTimestamp,
+                     TimesAccessed timesAccessed,
+                     TagList tag,
+                     NoteBody body) {
         this.title = title;
         this.timestamp = timestamp;
         this.createdTimestamp = createdTimestamp;
         this.lastAccessedTimestamp = lastAccessedTimestamp;
+        this.timesAccessed = timesAccessed;
+        this.tag = tag;
+        this.body = body;
     }
 
     @Override
