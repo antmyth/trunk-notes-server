@@ -58,7 +58,7 @@ public class TrunkNoteReaderTest {
         }
 
         TrunkNoteReader reader = new TrunkNoteReader();
-        TrunkNote expected = new TrunkNote(title,timestamp,createdTimestamp,lastAccessedTimestamp,timesAccessed,tags,body);
+        TrunkNote expected = new TrunkNote(tempFile.toFile().getName(),title,timestamp,createdTimestamp,lastAccessedTimestamp,timesAccessed,tags,body);
 
         assertThat(expected, is(reader.load(tempFile.toFile())));
     }

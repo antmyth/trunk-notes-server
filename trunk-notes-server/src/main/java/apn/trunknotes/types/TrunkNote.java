@@ -11,6 +11,7 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  */
 public class TrunkNote {
 
+    private final String noteFileName;
     private final Title title;
     private Timestamp timestamp;
     private CreatedTimestamp createdTimestamp;
@@ -19,13 +20,15 @@ public class TrunkNote {
     private final TagList tag;
     private final NoteBody body;
 
-    public TrunkNote(Title title,
+    public TrunkNote(String noteFileName,
+                     Title title,
                      Timestamp timestamp,
                      CreatedTimestamp createdTimestamp,
                      LastAccessedTimestamp lastAccessedTimestamp,
                      TimesAccessed timesAccessed,
                      TagList tag,
                      NoteBody body) {
+        this.noteFileName = noteFileName;
         this.title = title;
         this.timestamp = timestamp;
         this.createdTimestamp = createdTimestamp;
@@ -49,5 +52,17 @@ public class TrunkNote {
     @Override
     public String toString() {
         return reflectionToString(this, SHORT_PREFIX_STYLE);
+    }
+
+    public NoteBody body() {
+        return body;
+    }
+
+    public Title title() {
+        return title;
+    }
+
+    public String noteFileName() {
+        return noteFileName;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class TrunkNoteReader {
     public TrunkNote load(File noteFile) throws Exception {
         Path path = noteFile.toPath();
+        String noteFileName = noteFile.getName();
         List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
         Title title = new Title(allLines.get(0).substring(7));
         Timestamp timestamp = new Timestamp(allLines.get(1).substring(11));
@@ -22,7 +23,7 @@ public class TrunkNoteReader {
         TimesAccessed timesAccessed = new TimesAccessed(allLines.get(4).substring("Times Accessed: ".length()));
         TagList tags = parseTagList(allLines);
         NoteBody body = parseNoteBody(allLines);
-        return new TrunkNote(title, timestamp, createdTimestamp, lastAccessedTimestamp, timesAccessed, tags, body);
+        return new TrunkNote(noteFileName, title, timestamp, createdTimestamp, lastAccessedTimestamp, timesAccessed, tags, body);
     }
 
     private NoteBody parseNoteBody(List<String> allLines) {
