@@ -38,6 +38,18 @@ public class TrunkNote {
         this.body = body;
     }
 
+	public NoteBody body() {
+		return body;
+	}
+
+	public Title title() {
+		return title;
+	}
+
+	public String noteFileName() {
+		return noteFileName;
+	}
+
     @Override
     public int hashCode() {
         return reflectionHashCode(this);
@@ -52,17 +64,5 @@ public class TrunkNote {
     @Override
     public String toString() {
         return reflectionToString(this, SHORT_PREFIX_STYLE);
-    }
-
-    public NoteBody body() {
-        return body;
-    }
-
-    public Title title() {
-        return title;
-    }
-
-    public String noteFileName() {
-        return noteFileName;
     }
 }

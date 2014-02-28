@@ -29,7 +29,11 @@ public class TrunkNoteReader {
     private NoteBody parseNoteBody(List<String> allLines) {
         StringBuilder sb = new StringBuilder();
         for (int i = 7; i < allLines.size(); i++) {
-            sb.append(allLines.get(i)).append("\n");
+			String currentLine = allLines.get(i);
+			if(currentLine.contains("[[")){
+				currentLine = currentLine.replaceAll("\\[\\[(.+)\\]\\]","[$1]($1)");
+			}
+			sb.append(currentLine).append("\n");
         }
         return new NoteBody(sb.toString());
     }
