@@ -1,7 +1,10 @@
 package apn.trunknotes.server;
 
 import apn.trunknotes.reader.TrunkNoteReader;
+import apn.trunknotes.types.Action;
 import apn.trunknotes.types.TrunkNote;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -19,6 +22,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -28,63 +32,76 @@ import static java.lang.String.format;
  */
 public class TrunkNotesServer {
 
-    public static void main(String[] args) throws Exception {
-        final Path path = Paths.get(args[0]);
-        if (!path.toFile().exists()) {
-            System.exit(-1);
-        }
-        Server server = new Server(8081);
-        HandlerList handlerList = new HandlerList();
-        ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setDirectoriesListed(true);
-        boolean exists = Files.exists(new File("src/main/resources").toPath());
-        System.out.println("exists = " + exists);
-        resourceHandler.setResourceBase("src/main/resources");
+	public static void main(String[] args) throws Exception {
+		final Path path = Paths.get(args[0]);
+		if (!path.toFile().exists()) {
+			System.exit(-1);
+		}
+		Server server = new Server(8081);
+		HandlerList handlerList = new HandlerList();
+		ResourceHandler resourceHandler = new ResourceHandler();
+		resourceHandler.setDirectoriesListed(true);
+		boolean exists = Files.exists(new File("src/main/resources").toPath());
+		System.out.println("exists = " + exists);
+		resourceHandler.setResourceBase("src/main/resources");
 
-        handlerList.setHandlers(new Handler[]{resourceHandler,new TrunkNotesHandler(path)});
-        server.setHandler(handlerList);
-        server.start();
-        server.join();
-    }
+		handlerList.setHandlers(new Handler[]{resourceHandler, new TrunkNotesHandler(path)});
+		server.setHandler(handlerList);
+		server.start();
+		server.join();
+	}
 
-    public static class TrunkNotesHandler extends AbstractHandler {
+	public static class TrunkNotesHandler extends AbstractHandler {
 
-        private final Path path;
+		private final Path path;
 
-        public TrunkNotesHandler(Path path) {
-            this.path = path;
-        }
+		public TrunkNotesHandler(Path path) {
+			this.path = path;
+		}
 
-        @Override
-        public void handle(String s,
-                           Request request,
-                           HttpServletRequest httpServletRequest,
-                           HttpServletResponse httpServletResponse) throws IOException, ServletException {
-            if (s.startsWith("/assets")) return;
-            httpServletResponse.setContentType("text/html;charset=utf-8");
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            request.setHandled(true);
-            PrintWriter writer = httpServletResponse.getWriter();
-            TrunkNote loadedNote = null;
-            try {
+		@Override
+		public void handle(String s,
+						   Request request,
+						   HttpServletRequest httpServletRequest,
+						   HttpServletResponse httpServletResponse) throws IOException, ServletException {
+			if (s.startsWith("/assets")) return;
+			httpServletResponse.setContentType("text/html;charset=utf-8");
+			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+			request.setHandled(true);
+			PrintWriter writer = httpServletResponse.getWriter();
+			TrunkNote loadedNote = null;
+			try {
 
-                loadedNote = new TrunkNoteReader().load(new File(path.toAbsolutePath()+s+".markdown"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Markdown4jProcessor markdown4jProcessor = new Markdown4jProcessor();
-            writer.print(format(
-                    "<html>\n" +
-                            "<head>\n" +
-                            "<link rel=\"stylesheet\" href=\"/assets/browser.css\" type=\"text/css\">" +
-                            "    <title>%s</title>\n" +
-                            "</head>\n" +
-                            "<body>\n" +
-                            "<h1 class=\"trunk_h1\"><span class=\"link-light\">[[</span>%s<span class=\"link-light\">]]</span></h1>" +
-                            "%s" +
-                            "</body>\n" +
-                            "</html>", loadedNote.title().asString(),loadedNote.noteFileName() ,markdown4jProcessor.process(loadedNote.body().asString())));
-        }
-    }
+				loadedNote = new TrunkNoteReader().load(new File(path.toAbsolutePath() + s + ".markdown"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			Markdown4jProcessor markdown4jProcessor = new Markdown4jProcessor();
+			List<String> actionsPretty = Lists.transform(loadedNote.actions(), new Function<Action, String>() {
+				@Override
+				public String apply(Action action) {
+					return action.prettyPrint();
+				}
+			});
+			System.out.println("actionsPretty = " + actionsPretty);
+			writer.print(format(
+					"<html>\n" +
+							"<head>\n" +
+							"<link rel=\"stylesheet\" href=\"/assets/browser.css\" type=\"text/css\">" +
+							"    <title>%s</title>\n" +
+							"</head>\n" +
+							"<body>\n" +
+							"<h1 class=\"trunk_h1\"><span class=\"link-light\">[[</span>%s<span class=\"link-light\">]]</span></h1>" +
+							"<h2 class=\"trunk_h2\"><span class=\"link-light\">[[</span>%s<span class=\"link-light\">]]</span></h2>" +
+							"%s" +
+							"</body>\n" +
+							"</html>",
+					loadedNote.title().asString(),
+					loadedNote.noteFileName(),
+					actionsPretty,
+					markdown4jProcessor.process(loadedNote.body().asString())));
+		}
+	}
 }
 

@@ -1,5 +1,9 @@
 package apn.trunknotes.reader;
 
+import apn.trunknotes.types.Action;
+import apn.trunknotes.types.ActionDate;
+import apn.trunknotes.types.ActionName;
+import apn.trunknotes.types.ActionText;
 import apn.trunknotes.types.CreatedTimestamp;
 import apn.trunknotes.types.LastAccessedTimestamp;
 import apn.trunknotes.types.NoteBody;
@@ -17,10 +21,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 
 import static apn.trunknotes.fixtures.TrunkNotesDataFixtures.someTag;
 import static basecamp.datafixtures.PrimitiveDataFixtures.someNumberOfLength;
 import static basecamp.datafixtures.PrimitiveDataFixtures.someString;
+import static basecamp.datafixtures.PrimitiveDataFixtures.someStringOfLength;
 import static java.lang.String.format;
 import static java.nio.file.Files.newBufferedWriter;
 import static org.hamcrest.CoreMatchers.is;
@@ -54,23 +60,19 @@ public class TrunkNoteReaderTest {
         Path tempFile = Files.createTempFile(someString(), "markdown");
 		body = new NoteBody("# APN wiki home\n" +
                 "# To Do's\n" +
-//                "[[TODO]]\n" +
-//                "# [[Rightmove_homepage]]\n" +
                 "\n" +
                 "\n" +
-//                "# [[Books]]\n" +
                 "# toRead \n" +
                 "{{action @toread}}\n" +
                 "# Reading List\n" +
                 "{{action @reading}}\n" +
                 "\n" +
                 "# \n"
-//                " [[HomePageOld]]\n"
 		);
 
 		writeTrunkNoteTo(tempFile);
 
-		TrunkNote expected = new TrunkNote(tempFile.toFile().getName(), title, timestamp, createdTimestamp, lastAccessedTimestamp, timesAccessed, tags, body);
+		TrunkNote expected = new TrunkNote(tempFile.toFile().getName(), title, timestamp, createdTimestamp, lastAccessedTimestamp, timesAccessed, tags, body, new ArrayList<Action>());
 
         assertThat(expected, is(trunkNoteReader.load(tempFile.toFile())));
     }
@@ -87,6 +89,34 @@ public class TrunkNoteReaderTest {
 		assertThat(trunkNote.body().asString(), containsString(format("[%1$s](%1$s)",linkedPage)));
 	}
 
+	@Test
+	public void parsesActionTagsOnTheNoteBody() throws Exception{
+		Path tempFile = Files.createTempFile(someString(), "markdown");
+		String actionTagName = someString();
+		String actionTagText = someStringOfLength(15) + " " + someString();
+		body = new NoteBody(format("@%s %s\n", actionTagName, actionTagText));
+
+		writeTrunkNoteTo(tempFile);
+
+		TrunkNote trunkNote = trunkNoteReader.load(tempFile.toFile());
+		assertThat(trunkNote.actions().size(), is(1));
+		assertThat(trunkNote.actions().get(0),is(new Action(new ActionName(actionTagName), new ActionDate(null), new ActionText(actionTagText))));
+	}
+
+	@Test
+	public void parsesActionTagsWithDateOnTheNoteBody() throws Exception{
+		Path tempFile = Files.createTempFile(someString(), "markdown");
+		String actionTagName = someString();
+		String actionTagText = someStringOfLength(15) + " " + someString();
+		String actionTagDate = "18/12/2013";
+		body = new NoteBody(format("@%s %s %s\n", actionTagName,actionTagDate, actionTagText));
+
+		writeTrunkNoteTo(tempFile);
+
+		TrunkNote trunkNote = trunkNoteReader.load(tempFile.toFile());
+		assertThat(trunkNote.actions().size(), is(1));
+		assertThat(trunkNote.actions().get(0),is(new Action(new ActionName(actionTagName), new ActionDate(actionTagDate),new ActionText(actionTagText))));
+	}
 
 	private void writeTrunkNoteTo(Path tempFile) throws IOException {
 		assertThat(true, is(tempFile.toFile().exists()));

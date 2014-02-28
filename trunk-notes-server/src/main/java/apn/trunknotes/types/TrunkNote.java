@@ -1,5 +1,7 @@
 package apn.trunknotes.types;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
@@ -19,15 +21,16 @@ public class TrunkNote {
     private final TimesAccessed timesAccessed;
     private final TagList tag;
     private final NoteBody body;
+	private final List<Action> actionList;
 
-    public TrunkNote(String noteFileName,
-                     Title title,
-                     Timestamp timestamp,
-                     CreatedTimestamp createdTimestamp,
-                     LastAccessedTimestamp lastAccessedTimestamp,
-                     TimesAccessed timesAccessed,
-                     TagList tag,
-                     NoteBody body) {
+	public TrunkNote(String noteFileName,
+					 Title title,
+					 Timestamp timestamp,
+					 CreatedTimestamp createdTimestamp,
+					 LastAccessedTimestamp lastAccessedTimestamp,
+					 TimesAccessed timesAccessed,
+					 TagList tag,
+					 NoteBody body, List<Action> actionList) {
         this.noteFileName = noteFileName;
         this.title = title;
         this.timestamp = timestamp;
@@ -36,7 +39,8 @@ public class TrunkNote {
         this.timesAccessed = timesAccessed;
         this.tag = tag;
         this.body = body;
-    }
+		this.actionList = actionList;
+	}
 
 	public NoteBody body() {
 		return body;
@@ -65,4 +69,9 @@ public class TrunkNote {
     public String toString() {
         return reflectionToString(this, SHORT_PREFIX_STYLE);
     }
+
+	public List<Action> actions() {
+		return actionList;
+	}
+
 }
