@@ -1,0 +1,171 @@
+body {
+	font: medium "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size:medium;
+	background-color: #eaeaea;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: x-large;
+}
+
+#trunk-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px;
+    color: #aaa;
+}
+
+#contents {
+	background-color: #fff;
+	padding: 4px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	color: #000;
+}
+
+#contents table {
+	color: #000;
+}
+
+h2 {
+	font-weight: bold;
+	font-size: large;
+}
+
+.link-light {
+    color: #ddd;
+}
+
+.trunk_form {
+	display: inline;
+}
+
+.message {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    background-color: none;
+    margin-left:  auto;
+    margin-right: auto;
+}
+
+.error {
+	color: #fff;
+	font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: red;
+    padding-bottom: 4px;
+    width: 300px;
+    -moz-border-bottom-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	-moz-border-bottom-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+.trunk_h1 {
+	padding: 4px 4px 4px 8px;
+	background-color: black;
+	color: white;
+}
+
+.trunk_h2 {
+	padding-left: 8px;
+}
+
+#contents {
+	padding: 8px;
+}
+
+#contents img {
+	border-style: none;
+}
+
+table.toolbar {
+	width: 100%;
+	border: none;
+}
+
+table.toolbar td {
+	border: none;
+}
+
+.tags {
+	margin-left: 8px;
+	margin-right: 8px;
+	margin-bottom: 8px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+td, th {
+    padding: .3em;
+    border: 1px #ccc solid;
+}
+
+thead {
+    background: #ccc;
+}
+
+.wmd-preview {
+	margin: 8px;
+	background-color: white;
+	border: 1px solid black;
+	padding: 4px;
+}
+
+.flash {
+	color: #fff;
+	font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: blue;
+    padding-bottom: 4px;
+    width: 300px;
+    -moz-border-bottom-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	-moz-border-bottom-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+.trunk_h3 {
+	padding-left: 8px;
+}
+
+#page-list table, #page-list td {
+	border: 0;
+}
+
+#page-list {
+	padding-left: 8px;
+}
+
+a {
+    text-decoration: none;
+    border-bottom: 1px dotted blue;
+}
+
+a.wiki-link {
+    text-decoration: underline;
+    border-bottom: none;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.highlight-selected {
+    background-color: red;
+}
+
+a.missing-wiki-link {
+    color: red;
+}
